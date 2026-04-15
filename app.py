@@ -8,6 +8,8 @@ from langgraph.graph import StateGraph, START, END
 from typing import Annotated, TypedDict, List
 from langchain_core.messages import BaseMessage, HumanMessage
 
+
+from dotenv import load_dotenv
 # --- STEP 1: PAGE CONFIG ---
 st.set_page_config(page_title="Cerebro Voice & Text", page_icon="🧠", layout="wide")
 
