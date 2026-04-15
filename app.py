@@ -14,9 +14,9 @@ st.set_page_config(page_title="Cerebro Voice & Text", page_icon="🧠", layout="
 # --- STEP 2: BACKEND CONFIG ---
 # --- STEP 2: BACKEND CONFIG (The Secure Way) ---
 # We try to get keys from the cloud's secure vault first
-if "GROQ_API_KEY" in st.secrets:
-    GROQ_KEY = st.secrets["GROQ_API_KEY"]
-    TAVILY_KEY = st.secrets["TAVILY_API_KEY"]
+if "GROQ_API_KEY" in os.getenv() and "TAVILY_API_KEY" in os.getenv():
+    GROQ_KEY = os.getenv["GROQ_API_KEY"]
+    TAVILY_KEY = os.getenv["TAVILY_API_KEY"]
 else:
     # If we are on your laptop, we use these (BUT WE HIDE THEM LATER)
     GROQ_KEY = "PASTE_YOUR_KEY_HERE_ONLY_DURING_LOCAL_TESTING"
