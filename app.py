@@ -11,19 +11,24 @@ from langchain_core.messages import BaseMessage, HumanMessage
 # --- STEP 1: PAGE CONFIG ---
 st.set_page_config(page_title="Cerebro Voice & Text", page_icon="🧠", layout="wide")
 
-# --- STEP 2: BACKEND CONFIG ---
-# --- STEP 2: BACKEND CONFIG (The Secure Way) ---
-# We try to get keys from the cloud's secure vault first
-if "GROQ_API_KEY" in os.getenv() and "TAVILY_API_KEY" in os.getenv():
-    GROQ_KEY = os.getenv["GROQ_API_KEY"]
-    TAVILY_KEY = os.getenv["TAVILY_API_KEY"]
-else:
-    # If we are on your laptop, we use these (BUT WE HIDE THEM LATER)
-    GROQ_KEY = "PASTE_YOUR_KEY_HERE_ONLY_DURING_LOCAL_TESTING"
-    TAVILY_KEY = "PASTE_YOUR_KEY_HERE_ONLY_DURING_LOCAL_TESTING"
+# --- STEP 2: BACKEND CONFIG (Secure for Render) ---
+# This loads your local .env file only if you are testing on your laptop
+load_dotenv()
 
+# These lines grab the keys you pasted into the Render Dashboard
+GROQ_KEY = os.getenv("GROQ_API_KEY")
+TAVILY_KEY = os.getenv("TAVILY_API_KEY")
+
+# Safety Check: If keys are missing, the app will show a clear message instead of crashing
+if not GROQ_KEY or not TAVILY_KEY:
+    st.error("❌ API Keys Missing! Please ensure GROQ_API_KEY and TAVILY_API_KEY are set in Render's Environment Variables.")
+    st.stop()
+
+# Set environment variables for LangChain/Tavily tools to use internally
 os.environ["GROQ_API_KEY"] = GROQ_KEY
 os.environ["TAVILY_API_KEY"] = TAVILY_KEY
+
+# Initialize the Groq client
 client = Groq(api_key=GROQ_KEY)
 
 # --- STEP 3: UI STYLING ---
